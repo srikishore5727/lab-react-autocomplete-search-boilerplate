@@ -1,0 +1,24 @@
+/* *{
+  padding: 0;
+  margin: 0;
+}
+
+input{
+  margin: .8rem;
+  margin-bottom: 0;
+  padding: .2rem;
+}
+
+button{
+  padding: .2rem;
+}
+
+#popup{
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.name{
+  margin: .5rem 0;
+} */
