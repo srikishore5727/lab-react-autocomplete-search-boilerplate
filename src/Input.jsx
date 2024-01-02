@@ -1,60 +1,38 @@
-import React, { useState, useEffect } from "react";
-import Info from "./Info";
-import appData from "./resources/countryData.json";
+import React, { useEffect, useState } from "react";
+import data from "./resources/countryData.json";
+import "./App.css";
 
-const data = appData;
+function App() {
+  const [value, setvalue] = useState("");
+  const [sugges, setSugges] = useState(true);
+  const [results,setResults] = useState([])
 
-function Input() {
-  const [text, setText] = useState("");
-  const [result, setResult] = useState([]);
-  const [showPopup, setShowPopup] = useState(false);
+  function handleEscape(e) {
+    e.key == "Escape" ? setSugges(!sugges) : null;
+  }
 
-  const filterResults = () => {
-    const filteredList = data
-      .filter((item) => item.name.toLowerCase().includes(text.toLowerCase()))
-      .map((item, index) => (
-        <div key={index} className="name" onClick={() => handleResultClick()}>
-          {item.name}
-        </div>
-      ));
-
-    setResult(filteredList);
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Escape") {
-      console.log(e.key);
-      setShowPopup(false);
-    }
-  };
-
-  const handleResultClick = () => {
-    console.log("escape");
-    setShowPopup(false);
-  };
-
-  const handleSubmit = () => {
-    filterResults();
-    setShowPopup(true);
-  };
-
-  useEffect(() => {
-    filterResults();
-    setShowPopup(false); 
-  }, [text]);
+  useEffect(()=>{
+    let list = data.map((ele, index) => {
+      return ele.name.toLocaleLowerCase().includes(value.toLocaleLowerCase()) && value != "" ? (
+        <p key={index}>{ele.name}</p>
+      ) : null
+    })
+     setResults(list)
+  })
 
   return (
-    <div onKeyDown={(e) => handleKeyDown(e)}>
+    <div onKeyDown={(e) => handleEscape(e)} id="wholeContainer">
       <input
         type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onChange={(e) => setvalue(e.target.value)}
+        placeholder="Enter here"
       />
-      <button onClick={handleSubmit}>Submit</button>
-      {showPopup && result.length > 0 && <Info text={result} />}
+
+      {sugges
+        ? results
+        : null}
     </div>
   );
 }
 
-export default Input;
+export default App;
